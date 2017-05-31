@@ -7,7 +7,7 @@ Following is a brief introduction to each of the files posted above:
 
 
 ## NSDUH Substance Use, Emotional Distress, and Substance Treatment Analysis:
-For this project, I utilized the 2015 National Survey on Drug Use and Health. This is a survey commissioned by the Substance Abuse and Mental Health Services Administration (SAMHSA), which began periodically in 1971, and has been conducted annually since 1990. The target population of this survey is civilian, noninstitutionalized US citizens aged 12 and above. 
+For this project, I utilized the 2015 National Survey on Drug Use and Health (NSDUH). This is a survey commissioned by the Substance Abuse and Mental Health Services Administration (SAMHSA), which began periodically in 1971, and has been conducted annually since 1990. The target population of this survey is civilian, noninstitutionalized US citizens aged 12 and above. 
 
 In exploring the data, I wanted to examine several aspects of respondents' substance use over time. These included lifetime use of substances across all respondents, patterns in ages of first use and most recent use of various substances, frequency of use for various substances, and rates of dependence and abuse of substances among individuals reporting use in the last 12 months.
 
@@ -56,15 +56,15 @@ Salary information was available for a limited subset (449) of the job posts sur
 I employed natural language processing (NLP) to examine the terms and phrases most associated with above-median salaries. This was done in part by examining the frequency with which terms appeared in above-median salary postings compared to their appearance in below-median salary postings. NLP examined terms with a certain minimum frequency (appearing in at least five percent of postings), to avoid examining terms that were too infrequent to be useful predictors.
 
 A logistic regression model developed with eight variables appeared to maximize predictive value while utilizing the fewest number of predictor variables.
-The model examined eight aspects of each posting when predicting whether salary would be above or below the median value:
-• Was the job located in Chicago, Washington DC, or San Francisco?
-• Did the job title contain “strong” terms including "data scientist, " "machine," "learning," or "engineer"?
-• Did the job title contain “weak” terms including "research," "analyst," or "associate"?
-• Did the company name include the “strong” term “associates”?
-• Did the company name include the “weak” term “university”?
-• Was the job posting located in the city of its posting, or in a nearby area (e.g., being in Seattle vs. Redmond, Washington)?
-• Did the job summary contain “strong” terms including "machine learning," "data scientist," "data science," "senior," "lead," "big data," "analytics," or "years"?
-• Did the job summary contain “weak” terms including "research," "analyze," and "analysis"?
+The model examined eight aspects of each posting when predicting whether salary would be above or below the median value:    
+• Was the job located in Chicago, Washington DC, or San Francisco?    
+• Did the job title contain “strong” terms including "data scientist, " "machine," "learning," or "engineer"?    
+• Did the job title contain “weak” terms including "research," "analyst," or "associate"?    
+• Did the company name include the “strong” term “associates”?    
+• Did the company name include the “weak” term “university”?    
+• Was the job posting located in the city of its posting, or in a nearby area (e.g., being in Seattle vs. Redmond, Washington)?    
+• Did the job summary contain “strong” terms including "machine learning," "data scientist," "data science," "senior," "lead," "big data," "analytics," or "years"?    
+• Did the job summary contain “weak” terms including "research," "analyze," and "analysis"?    
 
 Examining these eight questions in each job post allowed for above- vs. below-median salary to be correctly predicted in 83% of the test data set.
 
