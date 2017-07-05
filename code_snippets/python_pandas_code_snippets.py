@@ -102,6 +102,9 @@ df.column_z.order()                   # sort a column
 df.sort_values('column_z')                   # sort a DataFrame by a single column
 df.sort_values('column_z', ascending=False)  # use descending order instead
 
+# Sort dataframe by multiple columns
+df = df.sort(['col1','col2','col3'],ascending=[1,1,0])              
+              
 # can also filter 'df' using pandas.Series.isin 
 df[df.column_x.isin(["string_1", "string_2"])]
 
@@ -113,7 +116,7 @@ Renaming, Adding, and Removing Columns
 # rename one or more columns
 df.rename(columns={'original_column_1':'column_x', 'original_column_2':'column_y'}) #only prints data with changed names, changes not saved
 df.rename(columns={'original_column_1':'column_x', 'original_column_2':'column_y'}, inplace=True) #saves changes 
-             
+            
 # replace all column names (in place)
 new_cols = ['column_x', 'column_y', 'column_z']
 df.columns = new_cols
@@ -129,6 +132,14 @@ df['new_column_2'] = df.column_x * 1000     #can create new columns without for 
 df.drop('column_x', axis=1)                               # axis=0 for rows, 1 for columns - does not drop in place
 df.drop(['column_x', 'column_y'], axis=1, inplace=True)   # drop multiple columns
 
+# Lower-case all DataFrame column names
+df.columns = map(str.lower, df.columns)
+
+# Even more fancy DataFrame column re-naming
+# lower-case all DataFrame column names (for example)
+df.rename(columns=lambda x: x.split('.')[-1], inplace=True)
+       
+       
 '''
 Handling Missing Values
 '''
@@ -326,6 +337,24 @@ df.drop_duplicates()     # drop duplicate rows
 df.column_z.duplicated()      # check a single column for duplicates
 df.duplicated(['column_x', 'column_y', 'column_z']).sum()   # specify columns for finding duplicates
 
+# Clean up missing values in multiple DataFrame columns
+df = df.fillna({
+    'col1': 'missing',
+    'col2': '99.999',
+    'col3': '999',
+    'col4': 'missing',
+    'col5': 'missing',
+    'col6': '99'
+})
+
+# Concatenate two DataFrame columns into a new, single column
+# (useful when dealing with composite keys, for example)
+df['newcol'] = df['col1'].map(str) + df['col2'].map(str)
+
+# Doing calculations with DataFrame columns that have missing values
+# In example below, swap in 0 for df['col1'] cells that contain null
+df['new_col'] = np.where(pd.isnull(df['col1']),0,df['col1']) + df['col2']
+                       
 # display a cross-tabulation of two Series
 pd.crosstab(df.column_x, df.column_y)
 
@@ -333,6 +362,28 @@ pd.crosstab(df.column_x, df.column_y)
 df.query('column_z < 20')                     # df[df.column_z < 20]
 df.query("column_z < 20 and column_y=='string'")   # df[(df.column_z < 20) & (df.column_y=='string')]
 df.query('column_z < 20 or column_z > 60')     # df[(df.column_z < 20) | (df.column_z > 60)]
+
+# Loop through rows in a DataFrame (if you must)
+for index, row in df.iterrows():
+    print index, row['some column']
+
+# Much faster way to loop through DataFrame rows if you can work with tuples
+for row in df.itertuples():
+    print(row)
+
+# Get rid of non-numeric values throughout a DataFrame:
+for col in df.columns.values:
+  df[col] = df[col].replace('[^0-9]+.-', '', regex=True)
+
+# Change all NaNs to None (useful before
+# loading to a db)
+df = df.where((pd.notnull(df)), None)
+
+# Split delimited values in a DataFrame column into two new columns
+df['new_col1'], df['new_col2'] = zip(*df['original_col'].apply(lambda x: x.split(': ', 1)))
+
+# Collapse hierarchical column indexes
+df.columns = df.columns.get_level_values(0)
 
 # display the memory usage of a DataFrame
 df.info()               # total usage
